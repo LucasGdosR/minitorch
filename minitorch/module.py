@@ -56,8 +56,7 @@ class Module:
         # Get descendent modules with names for parameter naming
         m: Dict[str, Module] = self.__dict__["_modules"]
         for k, v in m.items():
-            m_named_p = v.named_parameters()
-            for n, p in m_named_p:
+            for n, p in v.named_parameters():
                 my_named_p.append((f'{k}.{n}', p))
         return my_named_p
 
