@@ -197,13 +197,11 @@ class LT(ScalarFunction):
 
     @staticmethod
     def forward(ctx: Context, a: float, b: float) -> float:
-        ctx.save_for_backward(a < b)
         return operators.lt(a, b)
 
     @staticmethod
     def backward(ctx: Context, d_output: float) -> Tuple[float, float]:
-        (a,) = ctx.saved_values
-        return d_output, d_output if a else 0.0, 0.0
+        return 0.0, 0.0
 
 
 class GT(ScalarFunction):
@@ -211,13 +209,11 @@ class GT(ScalarFunction):
     
     @staticmethod
     def forward(ctx: Context, a: float, b: float) -> float:
-        ctx.save_for_backward(a > b)
         return 1.0 if a > b else 0.0
     
     @staticmethod
     def backward(ctx: Context, d_output: float) -> Tuple[float, float]:
-        (a,) = ctx.saved_values
-        return d_output, d_output if a else 0.0, 0.0
+        return 0.0, 0.0
 
 
 class EQ(ScalarFunction):
@@ -225,11 +221,8 @@ class EQ(ScalarFunction):
 
     @staticmethod
     def forward(ctx: Context, a: float, b: float) -> float:
-        bol = operators.is_close(a, b)
-        ctx.save_for_backward(bol)
-        return bol
+        return operators.is_close(a, b)
 
     @staticmethod
     def backward(ctx: Context, d_output: float) -> Tuple[float, float]:
-        (bol,) = ctx.saved_values
-        return d_output if bol else 0.0
+        return 0.0, 0.0
